@@ -1,66 +1,69 @@
-/* --- FIXED CSS FOR CENTERING CONTENT AND IMAGES --- */
+/* --- PROJECTS SECTION LAYOUT FIXES --- */
 
-.hero-section {
-    /* Set a minimum height to ensure enough vertical space */
-    min-height: 85vh; 
-    
-    /* Use Flexbox to manage vertical positioning */
-    display: flex; 
-    flex-direction: column; /* Stack the .container element vertically */
-    justify-content: center; /* Center the .container block vertically */
-    align-items: center; /* Center the .container block horizontally */
-    
-    text-align: center; /* Center inline text content (h2, p, a) */
-    background-color: #f0f0f0; 
-}
-
-/* 1. Container Management: Ensure the content area is centered */
-.hero-section .container {
-    /* The parent flex properties (align-items: center) already handle horizontal centering */
-    max-width: 900px; 
-    width: 100%;
-    padding: 0 20px; /* Add horizontal padding for smaller screens */
-    
-    /* We use margin-top here to push the whole container further down within the hero-section */
-    margin-top: 50px; 
-}
-
-
-/* 2. Styling for the_photo.jpg (New Featured Image) */
-.hero-feature-image {
-    width: 100%; 
-    max-height: 400px; 
-    object-fit: cover; 
-    
-    /* Remove redundant margin: auto, as the parent's text-align: center will center it as an inline-block/block if needed, or it spans 100% width anyway */
-    display: block; 
-    margin-bottom: 50px; 
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* 3. Styling for the Profile Picture - Centered and More Down */
-.profile-pic {
-    width: 150px; 
-    height: 150px; 
-    border-radius: 50%;
-    border: 5px solid #fff; 
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
-    
-    /* Remove margin-left/right: auto. The parent .container's text-align: center handles this. */
-    display: block; 
-    margin-top: 0; /* Already pushed down by the surrounding elements/container padding */
-    margin-bottom: 30px; 
-    
-    /* Re-center it using block/auto if necessary, but text-align: center usually suffices for centered block elements inside a text-aligned parent. */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* --- Ensure other sections are reset if needed from prior parallax attempt --- */
-
-.about-section, .projects-section, .contact-section, .main-footer {
-    background-color: #ffffff; /* Use solid background to separate from hero */
-    position: relative; 
-    z-index: 1;
+.projects-section {
     padding: 60px 0;
+    background-color: #ffffff; /* Ensure background is solid white or another neutral color */
 }
+
+.project-grid {
+    display: flex; /* Activate Flexbox on the container */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+    gap: 30px; /* Space between project items */
+    justify-content: center; /* Center the grid items horizontally */
+    margin-top: 30px;
+}
+
+.project-item {
+    /* Set items to take up about half the width, minus the gap */
+    flex: 1 1 calc(50% - 30px); 
+    max-width: calc(50% - 15px); /* Max width for two columns with space in between */
+    
+    /* Style the project box */
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle lift */
+    text-align: left;
+}
+
+/* Ensure the titles are bold and clear */
+.project-item h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* --- BUTTON STYLING FIXES --- */
+
+/* Base Button Style (used for View My Work, Send Message) */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark, authoritative background color */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover {
+    background-color: #555; /* Slightly lighter on hover */
+}
+
+/* Project specific button style */
+.project-btn {
+    margin-top: 15px; /* Separate the button from the description text */
+}
+
+/* Ensure the image container and centering from the previous step is still correct: */
+.hero-section {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    min-height: 85vh;
+}
+/* ... (Ensure the .hero-feature-image and .profile-pic styles are also in place) ... */
