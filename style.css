@@ -1,57 +1,66 @@
-/* --- CSS for Centering Images and Content --- */
+/* --- FIXED CSS FOR CENTERING CONTENT AND IMAGES --- */
 
 .hero-section {
-    /* Set a minimum height to ensure enough space for centering and the image */
+    /* Set a minimum height to ensure enough vertical space */
     min-height: 85vh; 
     
-    /* Use Flexbox to center content vertically and horizontally */
+    /* Use Flexbox to manage vertical positioning */
     display: flex; 
-    flex-direction: column; /* Stack children vertically */
-    justify-content: center; /* Center content block vertically */
-    align-items: center; /* Center content block horizontally */
+    flex-direction: column; /* Stack the .container element vertically */
+    justify-content: center; /* Center the .container block vertically */
+    align-items: center; /* Center the .container block horizontally */
     
-    text-align: center; /* Center text content (h2, p, a) */
-    background-color: #f0f0f0; /* Default background for the hero area */
+    text-align: center; /* Center inline text content (h2, p, a) */
+    background-color: #f0f0f0; 
 }
 
-/* Ensure the inner container respects centering */
+/* 1. Container Management: Ensure the content area is centered */
 .hero-section .container {
-    padding: 0; /* Remove unnecessary padding from container */
-    max-width: 900px; /* Adjust maximum width for your content */
+    /* The parent flex properties (align-items: center) already handle horizontal centering */
+    max-width: 900px; 
     width: 100%;
-    /* Flexbox on the container is already centering it due to the parent hero-section */
+    padding: 0 20px; /* Add horizontal padding for smaller screens */
+    
+    /* We use margin-top here to push the whole container further down within the hero-section */
+    margin-top: 50px; 
 }
 
 
-/* Styling for the_photo.jpg (the new featured image) */
+/* 2. Styling for the_photo.jpg (New Featured Image) */
 .hero-feature-image {
-    /* Make the image span the width of its container */
     width: 100%; 
-    /* Set a maximum height for a prominent, centered banner look */
     max-height: 400px; 
-    /* Ensure the image crops nicely without stretching */
     object-fit: cover; 
-    /* Add space below the image */
-    margin-bottom: 50px; 
-    /* Optional: Add a shadow for better separation */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    /* Ensure it is centered within the hero-section flex container */
+    
+    /* Remove redundant margin: auto, as the parent's text-align: center will center it as an inline-block/block if needed, or it spans 100% width anyway */
     display: block; 
-    margin-left: auto; 
-    margin-right: auto;
+    margin-bottom: 50px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Styling for the Profile Picture - Centered and More Down */
+/* 3. Styling for the Profile Picture - Centered and More Down */
 .profile-pic {
     width: 150px; 
     height: 150px; 
     border-radius: 50%;
     border: 5px solid #fff; 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
-    /* Add space below and push it down within the hero content */
-    margin-top: 50px; 
-    margin-bottom: 30px; 
+    
+    /* Remove margin-left/right: auto. The parent .container's text-align: center handles this. */
     display: block; 
+    margin-top: 0; /* Already pushed down by the surrounding elements/container padding */
+    margin-bottom: 30px; 
+    
+    /* Re-center it using block/auto if necessary, but text-align: center usually suffices for centered block elements inside a text-aligned parent. */
     margin-left: auto;
     margin-right: auto;
+}
+
+/* --- Ensure other sections are reset if needed from prior parallax attempt --- */
+
+.about-section, .projects-section, .contact-section, .main-footer {
+    background-color: #ffffff; /* Use solid background to separate from hero */
+    position: relative; 
+    z-index: 1;
+    padding: 60px 0;
 }
