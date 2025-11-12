@@ -1,69 +1,41 @@
-/* --- PROJECTS SECTION LAYOUT FIXES --- */
+/* ADD THIS TO YOUR style.css FILE */
 
-.projects-section {
-    padding: 60px 0;
-    background-color: #ffffff; /* Ensure background is solid white or another neutral color */
+/* 1. Ensure the image container covers the entire viewport */
+.full-page-image-container {
+    position: fixed; /* Fixed position relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Viewport Width */
+    height: 100vh; /* Viewport Height */
+    overflow: hidden; /* Hide anything outside the viewport bounds */
+    z-index: -10; /* Place it behind all other content */
 }
 
-.project-grid {
-    display: flex; /* Activate Flexbox on the container */
-    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
-    gap: 30px; /* Space between project items */
-    justify-content: center; /* Center the grid items horizontally */
-    margin-top: 30px;
+/* 2. Style the image itself to always cover the container */
+.full-page-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area, clipping excess if necessary */
+    filter: brightness(0.6); /* Optional: Darken the image slightly so text is easier to read (Dark Confidence!) */
 }
 
-.project-item {
-    /* Set items to take up about half the width, minus the gap */
-    flex: 1 1 calc(50% - 30px); 
-    max-width: calc(50% - 15px); /* Max width for two columns with space in between */
-    
-    /* Style the project box */
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle lift */
-    text-align: left;
+/* 3. Important: Ensure content is layered on top and readable */
+/* By default, sections should have a transparent background. 
+   If you want the content boxes to sit on top of the image, give them a background color. */
+
+.hero-section, .about-section, .projects-section, .contact-section {
+    background-color: rgba(255, 255, 255, 0.85); /* Example: Semi-transparent white background for readability */
+    padding: 60px 0; /* Add padding back to sections */
 }
 
-/* Ensure the titles are bold and clear */
-.project-item h4 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333;
+.main-header {
+    /* Ensure the header sits above the background image, but below content sections */
+    position: relative; 
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for the header */
 }
 
-/* --- BUTTON STYLING FIXES --- */
-
-/* Base Button Style (used for View My Work, Send Message) */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #333; /* Dark, authoritative background color */
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+.main-footer {
+    position: relative; 
+    z-index: 10;
 }
-
-.btn:hover {
-    background-color: #555; /* Slightly lighter on hover */
-}
-
-/* Project specific button style */
-.project-btn {
-    margin-top: 15px; /* Separate the button from the description text */
-}
-
-/* Ensure the image container and centering from the previous step is still correct: */
-.hero-section {
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-    min-height: 85vh;
-}
-/* ... (Ensure the .hero-feature-image and .profile-pic styles are also in place) ... */
