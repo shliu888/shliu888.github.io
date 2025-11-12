@@ -115,6 +115,7 @@ h1, h2, h3, h4 {
     color: var(--light-text-color);
     font-size: 3em;
     margin-bottom: 0.2em;
+    padding-top: 20px; /* Added padding since profile pic is gone */
 }
 
 .hero-section .tagline {
@@ -124,6 +125,7 @@ h1, h2, h3, h4 {
     opacity: 0.9;
 }
 
+/* FEATURE IMAGE: Adjusted to be the dominant background element */
 .hero-feature-image {
     position: absolute;
     top: 0;
@@ -131,24 +133,16 @@ h1, h2, h3, h4 {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.1; /* Subtle background effect */
+    opacity: 0.15; /* Slightly increased opacity for more presence */
     z-index: 1;
 }
 
 .hero-section .container {
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Ensures text and button are above the image */
 }
 
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid var(--light-text-color);
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
+/* Removed .profile-pic styling */
 
 /* Sections (General) */
 section {
