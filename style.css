@@ -1,383 +1,57 @@
-/* General Body & Typography */
-:root {
-    --primary-color: #007bff; /* A nice blue for accents */
-    --secondary-color: #6c757d; /* A subtle grey */
-    --dark-color: #343a40; /* For text and main elements */
-    --light-color: #f8f9fa; /* For backgrounds */
-    --white-color: #ffffff;
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Roboto', sans-serif;
-}
+/* --- CSS for Centering Images and Content --- */
 
-body {
-    font-family: var(--font-body);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    color: var(--dark-color);
-    background-color: var(--light-color);
-    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
-}
-
-.container {
-    max-width: 1100px;
-    margin: auto;
-    overflow: hidden;
-    padding: 0 20px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    color: var(--dark-color);
-    margin-bottom: 15px;
-}
-
-h2 {
-    font-size: 2.5em;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-h3 {
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    background: var(--primary-color);
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.3s ease;
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-body);
-}
-
-.btn:hover {
-    background: darken(var(--primary-color), 10%); /* This won't work in pure CSS, use a slightly darker hex */
-    background: #0056b3; /* A darker blue */
-    text-decoration: none;
-}
-
-.btn.secondary-btn {
-    background: var(--secondary-color);
-    margin-left: 10px;
-}
-
-.btn.secondary-btn:hover {
-    background: #545b62; /* A darker grey */
-}
-
-
-/* Header & Navigation */
-.main-header {
-    background: var(--white-color);
-    color: var(--dark-color);
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.main-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.main-header .logo a {
-    font-family: var(--font-heading);
-    font-size: 1.8em;
-    font-weight: 700;
-    color: var(--dark-color);
-    text-decoration: none;
-}
-
-.main-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-.main-nav ul li {
-    margin-left: 20px;
-}
-
-.main-nav ul li a {
-    color: var(--dark-color);
-    font-weight: 400;
-    font-size: 1.1em;
-    transition: color 0.3s ease;
-}
-
-.main-nav ul li a:hover {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-/* Hero Section */
 .hero-section {
-    background: var(--dark-color);
-    color: var(--white-color);
-    text-align: center;
-    padding: 80px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 70vh; /* Takes up a good portion of the viewport height */
-}
-
-.hero-section .profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid var(--primary-color);
-    margin-bottom: 25px;
-}
-
-.hero-section h2 {
-    color: var(--white-color);
-    margin-bottom: 10px;
-    font-size: 3em;
-}
-
-.hero-section .tagline {
-    font-size: 1.4em;
-    margin-bottom: 30px;
-    color: #ccc;
-}
-
-/* General Section Styling */
-section {
-    padding: 60px 0;
-    text-align: center;
-}
-
-section:nth-child(even) { /* Alternate background for better visual separation */
-    background-color: var(--white-color);
-}
-
-/* About Section */
-.about-section p {
-    max-width: 800px;
-    margin: 0 auto 20px auto;
-    font-size: 1.1em;
-    line-height: 1.8;
-}
-
-/* Projects Section */
-.projects-section {
-    background: var(--light-color);
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.project-item {
-    background: var(--white-color);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-    text-align: left;
-}
-
-.project-item:hover {
-    transform: translateY(-5px);
-}
-
-.project-item img {
-    max-width: 100%;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    height: 200px; /* Consistent height for project images */
-    object-fit: cover;
-}
-
-.project-item h4 {
-    margin-top: 0;
-    color: var(--dark-color);
-}
-
-.project-item p {
-    font-size: 0.95em;
-    line-height: 1.7;
-    margin-bottom: 20px;
-}
-
-.project-item .btn {
-    font-size: 0.9em;
-    padding: 8px 15px;
-    margin-right: 10px;
-    margin-bottom: 10px; /* For stacking on small screens */
-}
-
-
-/* Contact Section */
-.contact-form {
-    max-width: 600px;
-    margin: 30px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: var(--font-body);
-    font-size: 1em;
-}
-
-.contact-form textarea {
-    resize: vertical; /* Allow vertical resizing */
-}
-
-.contact-form button {
-    align-self: flex-start; /* Aligns button to the left */
-}
-
-.social-links {
-    margin-top: 30px;
-}
-
-.social-links a {
-    font-size: 1.2em;
-    margin: 0 15px;
-    color: var(--dark-color);
-    transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-
-/* Footer */
-.main-footer {
-    background: var(--dark-color);
-    color: var(--white-color);
-    text-align: center;
-    padding: 30px 0;
-    font-size: 0.9em;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .main-header .container {
-        flex-direction: column;
-    }
-
-    .main-header .logo {
-        margin-bottom: 15px;
-    }
-
-    .main-nav ul {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .main-nav ul li {
-        margin: 5px 0;
-    }
-
-    .hero-section {
-        padding: 60px 0;
-        min-height: 50vh;
-    }
-
-    .hero-section h2 {
-        font-size: 2.5em;
-    }
-
-    .hero-section .tagline {
-        font-size: 1.2em;
-    }
-
-    h2, h3 {
-        font-size: 1.8em;
-    }
-
-    .project-grid {
-        grid-template-columns: 1fr; /* Stack projects on small screens */
-    }
-
-    .project-item .btn {
-        display: block; /* Make buttons full width */
-        width: calc(100% - 30px); /* Adjust for padding */
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .contact-form button {
-        align-self: stretch; /* Make button full width */
-    }
-    /* Container for the side-by-side layout */
-.project-grid {
-    display: flex; /* 1. Turn on Flexbox */
-    gap: 20px; /* 2. Add space between the project items */
-    justify-content: space-between; /* 3. Distribute space evenly (optional) */
-    flex-wrap: wrap; /* 4. Allow wrapping for smaller screens */
-}
-
-/* Styling for each project card */
-.project-item {
-    /* Each item will take up slightly less than 50% to account for the 'gap' */
-    flex: 1 1 48%; /* flex-grow: 1, flex-shrink: 1, basis: 48% */
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Optional: gives a nice lift effect */
-    background-color: #ffffff;
+    /* Set a minimum height to ensure enough space for centering and the image */
+    min-height: 85vh; 
     
-    /* Ensure the button is at the bottom (optional, but good practice) */
-    display: flex;
-    flex-direction: column;
+    /* Use Flexbox to center content vertically and horizontally */
+    display: flex; 
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center content block vertically */
+    align-items: center; /* Center content block horizontally */
+    
+    text-align: center; /* Center text content (h2, p, a) */
+    background-color: #f0f0f0; /* Default background for the hero area */
 }
 
-/* Push the button to the bottom of the card */
-.project-item p {
-    flex-grow: 1; /* Makes the paragraph take up available vertical space */
+/* Ensure the inner container respects centering */
+.hero-section .container {
+    padding: 0; /* Remove unnecessary padding from container */
+    max-width: 900px; /* Adjust maximum width for your content */
+    width: 100%;
+    /* Flexbox on the container is already centering it due to the parent hero-section */
 }
 
-.project-item .project-btn {
-    margin-top: 15px; /* Add some space above the button */
-    align-self: flex-start; /* Aligns button to the left */
+
+/* Styling for the_photo.jpg (the new featured image) */
+.hero-feature-image {
+    /* Make the image span the width of its container */
+    width: 100%; 
+    /* Set a maximum height for a prominent, centered banner look */
+    max-height: 400px; 
+    /* Ensure the image crops nicely without stretching */
+    object-fit: cover; 
+    /* Add space below the image */
+    margin-bottom: 50px; 
+    /* Optional: Add a shadow for better separation */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    /* Ensure it is centered within the hero-section flex container */
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
 }
 
-/* Optional: Make them stack vertically on very small mobile screens */
-@media (max-width: 768px) {
-    .project-grid {
-        flex-direction: column;
-    }
-    .project-item {
-        /* On small screens, take up the full width */
-        flex: 1 1 100%;
-    }
-}
+/* Styling for the Profile Picture - Centered and More Down */
+.profile-pic {
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%;
+    border: 5px solid #fff; 
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
+    /* Add space below and push it down within the hero content */
+    margin-top: 50px; 
+    margin-bottom: 30px; 
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
 }
