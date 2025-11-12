@@ -1,41 +1,332 @@
-/* ADD THIS TO YOUR style.css FILE */
+/* Base Styles & Typography */
+:root {
+    --primary-color: #007bff; /* A nice, professional blue for accents */
+    --secondary-color: #333;
+    --background-color: #f4f7f6;
+    --text-color: #1a1a1a;
+    --light-text-color: #fff;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
 
-/* 1. Ensure the image container covers the entire viewport */
-.full-page-image-container {
-    position: fixed; /* Fixed position relative to the viewport */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--secondary-color);
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Header & Navigation */
+.main-header {
+    background-color: var(--light-text-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.8em;
+    transition: color var(--transition-speed);
+}
+
+.logo a:hover {
+    color: var(--primary-color);
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.main-nav li {
+    margin-left: 25px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 400;
+    padding: 5px 0;
+    position: relative;
+    transition: color var(--transition-speed);
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed);
+}
+
+.main-nav a:hover, .main-nav a:focus {
+    color: var(--primary-color);
+}
+
+.main-nav a:hover::after, .main-nav a:focus::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep blue gradient */
+    color: var(--light-text-color);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section h2 {
+    color: var(--light-text-color);
+    font-size: 3em;
+    margin-bottom: 0.2em;
+}
+
+.hero-section .tagline {
+    font-size: 1.2em;
+    font-weight: 300;
+    margin-bottom: 1.5em;
+    opacity: 0.9;
+}
+
+.hero-feature-image {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw; /* Viewport Width */
-    height: 100vh; /* Viewport Height */
-    overflow: hidden; /* Hide anything outside the viewport bounds */
-    z-index: -10; /* Place it behind all other content */
-}
-
-/* 2. Style the image itself to always cover the container */
-.full-page-hero-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the area, clipping excess if necessary */
-    filter: brightness(0.6); /* Optional: Darken the image slightly so text is easier to read (Dark Confidence!) */
+    object-fit: cover;
+    opacity: 0.1; /* Subtle background effect */
+    z-index: 1;
 }
 
-/* 3. Important: Ensure content is layered on top and readable */
-/* By default, sections should have a transparent background. 
-   If you want the content boxes to sit on top of the image, give them a background color. */
-
-.hero-section, .about-section, .projects-section, .contact-section {
-    background-color: rgba(255, 255, 255, 0.85); /* Example: Semi-transparent white background for readability */
-    padding: 60px 0; /* Add padding back to sections */
+.hero-section .container {
+    position: relative;
+    z-index: 2;
 }
 
-.main-header {
-    /* Ensure the header sits above the background image, but below content sections */
-    position: relative; 
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for the header */
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--light-text-color);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Sections (General) */
+section {
+    padding: 80px 0;
+}
+
+section:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+section:nth-child(odd) {
+    background-color: var(--light-text-color);
+}
+
+section h3 {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+section h3::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: var(--light-text-color);
+    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Projects Section */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-item {
+    background-color: var(--background-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.project-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+.project-btn {
+    margin-top: 15px;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.project-btn:hover {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+}
+
+/* Contact Section */
+.contact-form {
+    display: grid;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 30px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+.social-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.social-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 700;
+    margin: 0 15px;
+    font-size: 1.1em;
+    transition: color var(--transition-speed);
+}
+
+.social-links a:hover {
+    color: var(--secondary-color);
+}
+
+/* Footer */
 .main-footer {
-    position: relative; 
-    z-index: 10;
+    background-color: var(--secondary-color);
+    color: var(--light-text-color);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.main-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .main-header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .main-nav ul {
+        margin-top: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .main-nav li {
+        margin: 0 10px 10px 10px;
+    }
+
+    .hero-section {
+        padding: 80px 20px;
+    }
+
+    .hero-section h2 {
+        font-size: 2.2em;
+    }
+
+    section {
+        padding: 50px 0;
+    }
 }
