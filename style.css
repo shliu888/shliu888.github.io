@@ -103,19 +103,20 @@ h1, h2, h3, h4 {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep blue gradient */
+    /* Retained the deep blue gradient for a strong, clean background */
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
     color: var(--light-text-color);
     padding: 100px 0;
     text-align: center;
     position: relative;
-    overflow: hidden;
+    /* Removed overflow: hidden; as we no longer have positioned images */
 }
 
 .hero-section h2 {
     color: var(--light-text-color);
     font-size: 3em;
     margin-bottom: 0.2em;
-    padding-top: 20px; /* Added padding since profile pic is gone */
+    padding-top: 20px;
 }
 
 .hero-section .tagline {
@@ -125,24 +126,12 @@ h1, h2, h3, h4 {
     opacity: 0.9;
 }
 
-/* FEATURE IMAGE: Adjusted to be the dominant background element */
-.hero-feature-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.15; /* Slightly increased opacity for more presence */
-    z-index: 1;
-}
+/* COMPLETELY REMOVED: .hero-feature-image styling */
 
 .hero-section .container {
     position: relative;
-    z-index: 2; /* Ensures text and button are above the image */
+    z-index: 2; /* Ensures text and button are on top of the gradient */
 }
-
-/* Removed .profile-pic styling */
 
 /* Sections (General) */
 section {
