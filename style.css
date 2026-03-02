@@ -1,318 +1,63 @@
-/* Base Styles & Typography */
-:root {
-    --primary-color: #007bff; /* A nice, professional blue for accents */
-    --secondary-color: #333;
-    --background-color: #f4f7f6;
-    --text-color: #1a1a1a;
-    --light-text-color: #fff;
-    --border-radius: 8px;
-    --transition-speed: 0.3s;
-}
-
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    scroll-behavior: smooth;
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--secondary-color);
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 0;
-}
-
-/* Header & Navigation */
-.main-header {
-    background-color: var(--light-text-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.main-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-}
-
-.logo a {
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-size: 1.8em;
-    transition: color var(--transition-speed);
-}
-
-.logo a:hover {
-    color: var(--primary-color);
-}
-
-.main-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-.main-nav li {
-    margin-left: 25px;
-}
-
-.main-nav a {
-    text-decoration: none;
-    color: var(--secondary-color);
-    font-weight: 400;
-    padding: 5px 0;
-    position: relative;
-    transition: color var(--transition-speed);
-}
-
-.main-nav a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--primary-color);
-    transition: width var(--transition-speed);
-}
-
-.main-nav a:hover, .main-nav a:focus {
-    color: var(--primary-color);
-}
-
-.main-nav a:hover::after, .main-nav a:focus::after {
-    width: 100%;
-}
-
-/* Hero Section */
-.hero-section {
-    /* Retained the deep blue gradient for a strong, clean background */
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
-    color: var(--light-text-color);
-    padding: 100px 0;
-    text-align: center;
-    position: relative;
-    /* Removed overflow: hidden; as we no longer have positioned images */
-}
-
-.hero-section h2 {
-    color: var(--light-text-color);
-    font-size: 3em;
-    margin-bottom: 0.2em;
-    padding-top: 20px;
-}
-
-.hero-section .tagline {
-    font-size: 1.2em;
-    font-weight: 300;
-    margin-bottom: 1.5em;
-    opacity: 0.9;
-}
-
-/* COMPLETELY REMOVED: .hero-feature-image styling */
-
-.hero-section .container {
-    position: relative;
-    z-index: 2; /* Ensures text and button are on top of the gradient */
-}
-
-/* Sections (General) */
-section {
-    padding: 80px 0;
-}
-
-section:nth-child(even) {
-    background-color: var(--background-color);
-}
-
-section:nth-child(odd) {
-    background-color: var(--light-text-color);
-}
-
-section h3 {
-    text-align: center;
-    font-size: 2.2em;
-    margin-bottom: 50px;
-    position: relative;
-}
-
-section h3::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: var(--primary-color);
-    margin: 10px auto 0;
-    border-radius: 2px;
-}
-
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 12px 25px;
-    text-decoration: none;
-    color: var(--light-text-color);
-    background-color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    border-radius: var(--border-radius);
-    font-weight: 700;
-    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover {
-    background-color: #0056b3; /* Darker blue */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Projects Section */
+/* Projects Section - Refined List Style */
 .project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* We'll use borders for spacing instead of gaps */
+    max-width: 900px; /* Constraining the width makes lists easier to read */
+    margin: 0 auto;
 }
 
 .project-item {
-    background-color: var(--background-color);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    background-color: transparent; /* Removes the "boxy" background */
+    padding: 40px 0; /* Vertical breathing room */
+    border-radius: 0; /* No rounded corners needed for a list */
+    box-shadow: none; /* Stripping the heavy shadow */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator line */
+    transition: padding-left var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project-item:last-child {
+    border-bottom: none; /* Clean finish at the bottom */
 }
 
 .project-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: none; /* No lifting effect */
+    box-shadow: none;
+    padding-left: 15px; /* Subtle "slide" effect on hover to show focus */
 }
 
 .project-item h4 {
     color: var(--primary-color);
-    margin-bottom: 10px;
-    font-size: 1.5em;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    margin-bottom: 8px;
+    font-size: 1.8em; /* Slightly larger for the list header */
+}
+
+.project-item p {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    max-width: 700px; /* Keeps text lines from getting too long */
+}
+
+.project-item p strong {
+    color: var(--secondary-color);
+    font-weight: 700;
 }
 
 .project-btn {
-    margin-top: 15px;
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    margin-top: 10px;
+    padding: 8px 20px; /* Slightly slimmer buttons for a list look */
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: none;
 }
 
 .project-btn:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
-}
-
-/* Contact Section */
-.contact-form {
-    display: grid;
-    gap: 20px;
-    max-width: 600px;
-    margin: 0 auto 30px;
-    padding: 30px;
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
-    font-size: 1em;
-    font-family: 'Roboto', sans-serif;
-    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    outline: none;
-}
-
-.social-links {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.social-links a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 700;
-    margin: 0 15px;
-    font-size: 1.1em;
-    transition: color var(--transition-speed);
-}
-
-.social-links a:hover {
-    color: var(--secondary-color);
-}
-
-/* Footer */
-.main-footer {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: var(--light-text-color);
-    padding: 20px 0;
-    text-align: center;
-    font-size: 0.9em;
-}
-
-.main-footer a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    .main-header .container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .main-nav ul {
-        margin-top: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .main-nav li {
-        margin: 0 10px 10px 10px;
-    }
-
-    .hero-section {
-        padding: 80px 20px;
-    }
-
-    .hero-section h2 {
-        font-size: 2.2em;
-    }
-
-    section {
-        padding: 50px 0;
-    }
+    transform: none;
 }
