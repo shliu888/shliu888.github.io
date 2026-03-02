@@ -1,63 +1,213 @@
-/* Projects Section - Refined List Style */
+/* =========================================
+   1. BASE STYLES & VARIABLES
+   ========================================= */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #333;
+    --background-color: #f4f7f6;
+    --text-color: #1a1a1a;
+    --light-text-color: #fff;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--secondary-color);
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px; /* Slimmed down for better list readability */
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* =========================================
+   2. HEADER & NAVIGATION
+   ========================================= */
+.main-header {
+    background-color: var(--light-text-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.8em;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.main-nav li {
+    margin-left: 25px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    position: relative;
+    transition: color var(--transition-speed);
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+/* =========================================
+   3. HERO SECTION
+   ========================================= */
+.hero-section {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: var(--light-text-color);
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero-feature-image {
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-section h2 {
+    color: var(--light-text-color);
+    font-size: 3em;
+    margin-bottom: 0.2em;
+}
+
+.hero-section .tagline {
+    font-size: 1.2em;
+    opacity: 0.9;
+    margin-bottom: 1.5em;
+}
+
+/* =========================================
+   4. PROJECTS SECTION (THE LIST STYLE)
+   ========================================= */
+.projects-section {
+    padding: 80px 0;
+    background-color: var(--light-text-color);
+}
+
+.projects-section h3 {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 50px;
+}
+
 .project-grid {
     display: flex;
     flex-direction: column;
-    gap: 0; /* We'll use borders for spacing instead of gaps */
-    max-width: 900px; /* Constraining the width makes lists easier to read */
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .project-item {
-    background-color: transparent; /* Removes the "boxy" background */
-    padding: 40px 0; /* Vertical breathing room */
-    border-radius: 0; /* No rounded corners needed for a list */
-    box-shadow: none; /* Stripping the heavy shadow */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator line */
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     transition: padding-left var(--transition-speed);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .project-item:last-child {
-    border-bottom: none; /* Clean finish at the bottom */
+    border-bottom: none;
 }
 
 .project-item:hover {
-    transform: none; /* No lifting effect */
-    box-shadow: none;
-    padding-left: 15px; /* Subtle "slide" effect on hover to show focus */
+    padding-left: 20px; /* The "slide" effect instead of a "box" pop */
 }
 
 .project-item h4 {
     color: var(--primary-color);
-    margin-bottom: 8px;
-    font-size: 1.8em; /* Slightly larger for the list header */
+    font-size: 1.8em;
+    margin-bottom: 10px;
 }
 
 .project-item p {
-    font-size: 1.1em;
-    color: var(--text-color);
-    margin-bottom: 15px;
-    max-width: 700px; /* Keeps text lines from getting too long */
-}
-
-.project-item p strong {
-    color: var(--secondary-color);
-    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .project-btn {
+    display: inline-block;
     margin-top: 10px;
-    padding: 8px 20px; /* Slightly slimmer buttons for a list look */
-    background-color: transparent;
+    padding: 8px 20px;
+    text-decoration: none;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    box-shadow: none;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed);
 }
 
 .project-btn:hover {
     background-color: var(--primary-color);
-    color: var(--light-text-color);
-    transform: none;
+    color: white;
+}
+
+/* =========================================
+   5. CONTACT & FOOTER
+   ========================================= */
+.contact-section {
+    padding: 80px 0;
+    background-color: var(--background-color);
+}
+
+.contact-form {
+    display: grid;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-form input, .contact-form textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+}
+
+.btn-submit {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.main-footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0;
 }
