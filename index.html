@@ -1,94 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">        
-    <title>Shu-Hao Liu</title>
-    <meta name="google-site-verification" content="Guf5LGlqAKUHA61AA9y5r7-0KyQxf02wf0q_YcfP_os" />
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>360 Education with My Peers</title>
+  <meta name="description" content="Cross-platform music and academic tutoring app matching MatchApp.swift" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="container">
-            <h1 class="logo"><a href="#">Shu-Hao</a></h1>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="https://github.com/shliu888" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                    </ul>
-            </nav>
-        </div>
-    </header>
+  <!-- Web Toolbar (Visible on Desktop) -->
+  <header class="web-toolbar">
+    <div class="title-brand">
+      <img src="icon.png" alt="360 Logo" style="width: 24px; height: 24px; border-radius: 6px;" />
+      <span>360 Education</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="toolbar-btn" id="toggle-frame-btn">📱 Phone View</button>
+    </div>
+  </header>
 
-    <section id="hero" class="hero-section">
-        <div class="container">
-                        <img src="images/aura.png" alt="Featured Photo" class="hero-feature-image">
-            <h2>Hello, I'm Shu-Hao</h2>
-            <p class="tagline">AI & Cybersecurity Developer | Building intelligent systems for automation, defense, and efficiency.</p>
-            <a href="#projects" class="btn">View My Work</a>
-        </div>
-    </section>
+  <!-- Main Phone / App Shell -->
+  <main id="app-container">
+    
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span id="status-clock">9:41</span>
+      <div class="notch"></div>
+      <div class="status-icons">
+        <span>5G</span>
+        <span>􀛨</span>
+        <span>100%</span>
+      </div>
+    </div>
 
-    <section id="about" class="about-section">
-        <div class="container">
-            <h3>About Me</h3>
-            <p>
-                Welcome to my digital playground! I'm Shu-Hao, an AI enthusiast who loves exploring new concepts and building exciting projects!
-            </p>
-        </div>
-    </section>
+    <!-- Screen Viewport -->
+    <div id="screen-viewport">
 
-    <section id="projects" class="projects-section">
-        <div class="container">
-        <h3>My Projects</h3>
-        <div class="project-grid">
-            <div class="project-item">
-                <h4>Stick-figure to image with AI</h4>
-                <p>Draw a stick figure, then watch it turn into a stunning image!</p>
-                <p>                  </p>
-                <p>                  </p>
-                  <p><strong>Stack:</strong> LangChain, Python</p>
-                <a href="https://github.com/shliu888/stick-figure-to-image" target="_blank" class="btn project-btn">View Project</a>
-        </div> 
+      <!-- ================= 1. LANDING SCREEN ================= -->
+      <section id="screen-landing" class="screen active">
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 24px 30px 24px;">
+          <div></div>
+          <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="icon.png" alt="360 Education Logo" style="width: 110px; height: 110px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-bottom: 28px;" />
+            <h2 style="font-size: 32px; font-weight: 800; color: #111827; margin-bottom: 6px;">Welcome To</h2>
+            <h1 style="font-size: 24px; font-weight: 700; color: var(--ios-blue); line-height: 1.3;">360 Education with My Peers!</h1>
+          </div>
+          <div>
+            <button class="ios-btn-primary" id="btn-get-started" style="padding: 16px; font-size: 17px; font-weight: 700;">Get Started</button>
+          </div>
+        </div>
+      </section>
 
-        <div class="project-item">
-            <h4>Mock Trial with AI</h4>
-            <p>Watch a lawyer and a prosecutor debate a case. A judge then decides the verdict! </p>
-            <p>                  </p>
-            <p>                  </p>
-            <p><strong>Stack:</strong> LangChain, Python</p>
-            <a href="https://github.com/shliu888/mock-trial-ai" target="_blank" class="btn project-btn">View Project</a>
-        </div>
-    </div>
-</div>
-    </section>
+      <!-- ================= 2. AUTH MODE CHOOSER SCREEN ================= -->
+      <section id="screen-auth-choice" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('landing')">‹ Back</button>
+          </div>
+          <div class="nav-title">Get Started</div>
+          <div class="nav-right"></div>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center;">
+          <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">Let's get you set up</h2>
+          <p style="font-size: 16px; color: var(--ios-text-secondary); margin-bottom: 36px;">Choose an option below</p>
+          <div style="width: 100%; display: flex; flex-direction: column; gap: 14px;">
+            <button class="ios-btn-primary" id="btn-choice-signup">Sign Up</button>
+            <button class="ios-btn-secondary" id="btn-choice-login">Log In</button>
+          </div>
+        </div>
+      </section>
 
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h3>Get In Touch</h3>
-            <p>Have a question or want to work together? Feel free to reach out!</p>
-            <form action="https://formspree.io/f/xananqvr" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="_replyto" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </div>
-    </section>
+      <!-- ================= 3. AUTH SCREEN (LOG IN / SIGN UP) ================= -->
+      <section id="screen-auth" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('auth-choice')">‹ Back</button>
+          </div>
+          <div class="nav-title" id="auth-nav-title">Account</div>
+          <div class="nav-right"></div>
+        </div>
 
-    <footer class="main-footer">
-      <p>Image generated with AI</p>
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> Shu-Hao Liu. All rights reserved.</p>
-        </div>
-    </footer>
+        <div style="padding: 20px;">
+          <!-- Log In vs Sign Up Segment -->
+          <div class="ios-segmented-control" id="auth-mode-segmented">
+            <button type="button" class="segmented-option" data-mode="login">Log In</button>
+            <button type="button" class="segmented-option active" data-mode="signup">Sign Up</button>
+          </div>
 
-    <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+          <form id="auth-form" onsubmit="return false;">
+            <div class="ios-input-group">
+              <label class="ios-label">Email</label>
+              <input type="email" id="auth-email" class="ios-input" placeholder="name@example.com" required autocomplete="email" />
+            </div>
+
+            <div class="ios-input-group">
+              <label class="ios-label">Password</label>
+              <input type="password" id="auth-password" class="ios-input" placeholder="At least 6 characters" required autocomplete="current-password" />
+            </div>
+
+            <!-- Forgot password link (login only) -->
+            <div id="auth-forgot-row" style="display: none; margin-bottom: 14px; text-align: right;">
+              <button type="button" class="ios-btn-ghost" id="btn-open-forgot">Forgot password?</button>
+            </div>
+
+            <!-- Sign up only fields -->
+            <div id="signup-fields">
+              <div class="ios-input-group">
+                <label class="ios-label">I am a…</label>
+                <div class="ios-segmented-control" id="role-segmented">
+                  <button type="button" class="segmented-option active" data-role="student">Student</button>
+                  <button type="button" class="segmented-option" data-role="teacher">Teacher</button>
+                </div>
+              </div>
+
+              <div class="ios-input-group">
+                <label class="ios-label">Full Name</label>
+                <input type="text" id="auth-name" class="ios-input" placeholder="Full name" />
+              </div>
+
+              <div class="ios-input-group">
+                <label class="ios-label">Gender</label>
+                <input type="text" id="auth-gender" class="ios-input" placeholder="e.g. Female, Male, Non-binary" />
+              </div>
+
+              <!-- Student Specific -->
+              <div id="student-only-fields">
+                <div class="ios-input-group">
+                  <label class="ios-label">Grade Level</label>
+                  <select id="auth-student-grade" class="ios-select">
+                    <option value="1">Grade 1</option>
+                    <option value="2">Grade 2</option>
+                    <option value="3">Grade 3</option>
+                    <option value="4">Grade 4</option>
+                    <option value="5">Grade 5</option>
+                    <option value="6">Grade 6</option>
+                    <option value="7">Grade 7</option>
+                    <option value="8">Grade 8</option>
+                  </select>
+                </div>
+
+                <div class="ios-input-group">
+                  <label class="ios-label">Parent / Guardian Email</label>
+                  <input type="email" id="auth-parent-email" class="ios-input" placeholder="parent@example.com" />
+                </div>
+
+                <div class="ios-input-group">
+                  <label class="ios-label">Parent / Guardian Phone</label>
+                  <input type="tel" id="auth-parent-phone" class="ios-input" placeholder="e.g. 555-123-4567" />
+                </div>
+              </div>
+
+              <!-- Teacher Specific -->
+              <div id="teacher-only-fields" style="display: none;">
+                <div class="ios-input-group">
+                  <label class="ios-label">Grade Level / Occupation</label>
+                  <select id="auth-teacher-grade" class="ios-select">
+                    <option value="9">Grade 9</option>
+                    <option value="10">Grade 10</option>
+                    <option value="11">Grade 11</option>
+                    <option value="12">Grade 12</option>
+                    <option value="Current Teacher">Current Teacher</option>
+                    <option value="Retired Teacher">Retired Teacher</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="ios-input-group" id="teacher-other-wrap" style="display: none;">
+                  <label class="ios-label">Please explain (Other)</label>
+                  <input type="text" id="auth-teacher-other" class="ios-input" placeholder="Describe occupation" />
+                </div>
+              </div>
+            </div>
+
+            <div id="auth-error" style="color: var(--ios-red); font-size: 14px; margin-bottom: 12px; display: none;"></div>
+
+            <button type="submit" class="ios-btn-primary" id="btn-auth-submit" style="margin-top: 10px;">Create Account</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 4. MUSIC TAB SCREEN ================= -->
+      <section id="screen-music" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left"></div>
+          <div class="nav-title" id="music-nav-title">Music</div>
+          <div class="nav-right" id="music-nav-actions">
+            <button class="nav-btn icon-btn" id="btn-add-music-item">＋</button>
+          </div>
+        </div>
+        <div class="ios-large-header">
+          <h1 id="music-header-title">Music</h1>
+        </div>
+        <div id="music-content" style="padding-bottom: 24px;"></div>
+      </section>
+
+      <!-- ================= 5. ACADEMIC TAB SCREEN ================= -->
+      <section id="screen-academic" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left"></div>
+          <div class="nav-title" id="academic-nav-title">Academic</div>
+          <div class="nav-right" id="academic-nav-actions">
+            <button class="nav-btn icon-btn" id="btn-add-academic-item">＋</button>
+          </div>
+        </div>
+        <div class="ios-large-header">
+          <h1 id="academic-header-title">Academic</h1>
+        </div>
+        <div id="academic-content" style="padding-bottom: 24px;"></div>
+      </section>
+
+      <!-- ================= 6. CHAT TAB SCREEN ================= -->
+      <section id="screen-chat" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left"></div>
+          <div class="nav-title">Direct Messages</div>
+          <div class="nav-right">
+            <button class="nav-btn" id="btn-new-dm">✏️ New</button>
+          </div>
+        </div>
+        <div class="ios-large-header">
+          <h1>Direct Messages</h1>
+        </div>
+        <div id="chat-inbox-content" style="padding-bottom: 24px;"></div>
+      </section>
+
+      <!-- ================= 7. MORE TAB SCREEN ================= -->
+      <section id="screen-more" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left"></div>
+          <div class="nav-title">More</div>
+          <div class="nav-right"></div>
+        </div>
+        <div class="ios-large-header">
+          <h1>More</h1>
+        </div>
+
+        <div class="ios-section">
+          <div class="ios-card-group">
+            <div class="ios-list-row" onclick="navigate('account')">
+              <div class="row-left">
+                <div class="row-icon" style="background-color: var(--ios-blue);">👤</div>
+                <div>
+                  <div class="row-title">Account</div>
+                </div>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+
+            <div class="ios-list-row" onclick="navigate('contact')">
+              <div class="row-left">
+                <div class="row-icon" style="background-color: var(--ios-green);">✉️</div>
+                <div>
+                  <div class="row-title">Contact Us</div>
+                </div>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+
+            <div class="ios-list-row" onclick="navigate('supplies')">
+              <div class="row-left">
+                <div class="row-icon" style="background-color: var(--ios-orange);">📦</div>
+                <div>
+                  <div class="row-title">Need School Supplies?</div>
+                </div>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 8. TEACHER STUDENT DETAIL SCREEN ================= -->
+      <section id="screen-teacher-student" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" id="btn-back-teacher-student">‹ Back</button>
+          </div>
+          <div class="nav-title" id="teacher-student-nav-title">Student</div>
+          <div class="nav-right">
+            <button class="nav-btn icon-btn" id="btn-open-add-note">＋</button>
+          </div>
+        </div>
+        <div id="teacher-student-content" style="padding-bottom: 24px;"></div>
+      </section>
+
+      <!-- ================= 9. STUDENT PROGRESS SCREEN ================= -->
+      <section id="screen-student-progress" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" id="btn-back-student-progress">‹ Back</button>
+          </div>
+          <div class="nav-title" id="student-progress-nav-title">Progress</div>
+          <div class="nav-right"></div>
+        </div>
+        <div id="student-progress-content" style="padding-bottom: 24px;"></div>
+      </section>
+
+      <!-- ================= 10. LESSON DETAIL SCREEN ================= -->
+      <section id="screen-lesson-detail" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" id="btn-back-lesson-detail">‹ Back</button>
+          </div>
+          <div class="nav-title">Progress Note</div>
+          <div class="nav-right"></div>
+        </div>
+        <div id="lesson-detail-content" style="flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 80px;"></div>
+        <!-- Comment Bar -->
+        <div class="chat-input-bar">
+          <input type="text" id="lesson-comment-input" placeholder="Write a comment…" />
+          <button id="btn-send-lesson-comment">➤</button>
+        </div>
+      </section>
+
+      <!-- ================= 11. DM THREAD SCREEN ================= -->
+      <section id="screen-dm-thread" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('chat')">‹ Back</button>
+          </div>
+          <div class="nav-title" id="dm-thread-title">Chat</div>
+          <div class="nav-right"></div>
+        </div>
+        <div class="chat-container">
+          <div class="chat-messages" id="dm-messages-container"></div>
+          <div class="chat-input-bar">
+            <input type="text" id="dm-message-input" placeholder="Message…" />
+            <button id="btn-send-dm">➤</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 12. ACCOUNT SCREEN ================= -->
+      <section id="screen-account" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('more')">‹ Back</button>
+          </div>
+          <div class="nav-title">Account</div>
+          <div class="nav-right"></div>
+        </div>
+
+        <div class="ios-section">
+          <div class="ios-section-header">PROFILE</div>
+          <div class="ios-card-group" style="padding: 16px;">
+            <div style="margin-bottom: 12px;">
+              <span class="ios-label">Name</span>
+              <div id="account-name" style="font-size: 16px; font-weight: 600;">User</div>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <span class="ios-label">Role</span>
+              <div id="account-role" style="font-size: 16px; font-weight: 600;">Student</div>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <span class="ios-label">Email</span>
+              <div id="account-email" style="font-size: 16px; font-weight: 600;">user@example.com</div>
+            </div>
+            <div id="account-extra-info"></div>
+          </div>
+        </div>
+
+        <div class="ios-section">
+          <button class="ios-btn-secondary" id="btn-delete-account" style="margin-bottom: 12px;">Delete Account</button>
+          <button class="ios-btn-danger" id="btn-sign-out">Sign Out</button>
+        </div>
+      </section>
+
+      <!-- ================= 13. CONTACT US SCREEN ================= -->
+      <section id="screen-contact" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('more')">‹ Back</button>
+          </div>
+          <div class="nav-title">Contact Us</div>
+          <div class="nav-right"></div>
+        </div>
+        <div class="ios-section">
+          <div class="ios-card-group" style="padding: 24px; text-align: left;">
+            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Contact Us</h2>
+            <p style="font-size: 15px; color: var(--ios-text-secondary); margin-bottom: 20px;">Have any questions? We'd love to help.</p>
+            <a href="mailto:360viewofmypeers@gmail.com?subject=Question%20for%20360%20Education" class="ios-btn-primary" style="text-decoration: none;">
+              ✉️ 360viewofmypeers@gmail.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 14. NEED SUPPLIES SCREEN ================= -->
+      <section id="screen-supplies" class="screen">
+        <div class="ios-nav-bar">
+          <div class="nav-left">
+            <button class="nav-btn" onclick="navigate('more')">‹ Back</button>
+          </div>
+          <div class="nav-title">School Supplies</div>
+          <div class="nav-right"></div>
+        </div>
+        <div class="ios-section">
+          <div class="ios-card-group" style="padding: 24px; text-align: left;">
+            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Need School Supplies?</h2>
+            <p style="font-size: 15px; color: var(--ios-text-secondary); margin-bottom: 20px;">Email us with any requests!</p>
+            <a href="mailto:360viewofmypeers@gmail.com?subject=School%20Supplies%20Request" class="ios-btn-primary" style="text-decoration: none;">
+              📦 360viewofmypeers@gmail.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /#screen-viewport -->
+
+    <!-- ================= MODALS & SHEETS ================= -->
+    
+    <!-- Set Goal Modal -->
+    <div class="ios-modal-overlay" id="modal-set-goal">
+      <div class="ios-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <button class="sheet-btn cancel" onclick="closeModal('modal-set-goal')">Cancel</button>
+          <h3 id="goal-sheet-title">Set Goal</h3>
+          <button class="sheet-btn" id="btn-save-goal">Save</button>
+        </div>
+        <div class="sheet-body">
+          <div class="ios-input-group" id="goal-student-select-group">
+            <label class="ios-label">Student</label>
+            <select id="goal-student-select" class="ios-select"></select>
+          </div>
+          <div class="ios-input-group">
+            <label class="ios-label">Goal</label>
+            <textarea id="goal-text-input" class="ios-textarea" placeholder="e.g. Pass Grade 5 Piano Exam"></textarea>
+          </div>
+          <div class="ios-input-group">
+            <label class="ios-label">Notes (optional)</label>
+            <textarea id="goal-notes-input" class="ios-textarea" placeholder="Any notes about this goal…"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Progress Note Modal -->
+    <div class="ios-modal-overlay" id="modal-add-note">
+      <div class="ios-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <button class="sheet-btn cancel" onclick="closeModal('modal-add-note')">Cancel</button>
+          <h3>Add Progress Note</h3>
+          <button class="sheet-btn" id="btn-save-note">Save</button>
+        </div>
+        <div class="sheet-body">
+          <div class="ios-input-group">
+            <label class="ios-label">Written by (required)</label>
+            <input type="text" id="note-author-input" class="ios-input" placeholder="Your name" />
+          </div>
+          <div class="ios-input-group">
+            <label class="ios-label">Progress Note</label>
+            <textarea id="note-progress-input" class="ios-textarea" placeholder="Describe what was worked on and how the student is progressing…"></textarea>
+          </div>
+          <div class="ios-input-group">
+            <label class="ios-label">Notes (optional)</label>
+            <textarea id="note-notes-input" class="ios-textarea" placeholder="Any extra notes, reminders, or things to follow up on…"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New DM Modal (User Picker) -->
+    <div class="ios-modal-overlay" id="modal-new-dm">
+      <div class="ios-sheet" style="max-height: 90%;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <button class="sheet-btn cancel" onclick="closeModal('modal-new-dm')">Cancel</button>
+          <h3>New Message</h3>
+          <div style="width: 50px;"></div>
+        </div>
+        <div class="sheet-body">
+          <div class="ios-segmented-control" id="dm-picker-segmented">
+            <button class="segmented-option active" data-tab="teachers">Teachers</button>
+            <button class="segmented-option" data-tab="students">Students</button>
+          </div>
+          <div id="dm-user-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="ios-modal-overlay" id="modal-forgot-pwd">
+      <div class="ios-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <button class="sheet-btn cancel" onclick="closeModal('modal-forgot-pwd')">Cancel</button>
+          <h3>Reset Password</h3>
+          <button class="sheet-btn" id="btn-send-reset">Send</button>
+        </div>
+        <div class="sheet-body">
+          <p style="font-size: 14px; color: var(--ios-text-secondary); margin-bottom: 12px;">
+            Enter your email to receive a password reset link.
+          </p>
+          <div class="ios-input-group">
+            <input type="email" id="forgot-email-input" class="ios-input" placeholder="Email" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Tab Bar (Visible when logged in) -->
+    <nav id="tab-bar" style="display: none;">
+      <button class="tab-item active" data-tab="music">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+        <span>Music</span>
+      </button>
+
+      <button class="tab-item" data-tab="academic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <span>Academic</span>
+      </button>
+
+      <button class="tab-item" data-tab="chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Chat</span>
+        <div class="tab-badge" id="chat-tab-badge" style="display: none;">0</div>
+      </button>
+
+      <button class="tab-item" data-tab="more">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="8" cy="12" r="1"></circle>
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="16" cy="12" r="1"></circle>
+        </svg>
+        <span>More</span>
+      </button>
+    </nav>
+
+    <!-- iOS Home Indicator -->
+    <div class="ios-home-indicator"></div>
+
+  </main>
+
+  <!-- Load Firebase & Application Logic as Module -->
+  <script type="module" src="app.js"></script>
+
 </body>
 </html>
