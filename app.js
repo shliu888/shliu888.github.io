@@ -1,6 +1,6 @@
 // =========================================================================
-// 360 Education with My Peers - Web App (GitHub Pages Edition)
-// Mirrors MatchApp.swift layout & connects to the same Firebase backend
+// 360 Education with My Peers - Web App (GitHub Pages)
+// Fully mirrors MatchApp.swift layout & connects to the same Firebase
 // =========================================================================
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
@@ -42,40 +42,40 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// State
+// Application State
 let currentUser = null;
 let appUser = null;
 let currentScreen = "landing";
-let screenHistory = [];
 let activeTab = "music";
+let currentSubject = "Music";
 let unsubscribers = [];
 
-// Selected context
-let currentSubject = "Music";
+// Context for Detail Views
 let currentTeacherStudent = null; // { studentId, studentName, subject, goal }
 let currentStudentGoal = null;    // { id, goalText, notes, teacherName, subject, studentId }
 let currentLesson = null;         // { id, progressNote, notes, teacherName, createdAt, subject }
-let currentChatThread = null;     // { otherId, otherName, threadId }
-let unreadCount = 0;
+let currentChatThread = null;     // { otherId, otherName, otherRole, threadId }
+let manualStudentMode = false;
+let editingGoalId = null;
 
 // =========================================================================
-// Navigation Engine
+// Navigation Router
 // =========================================================================
 window.navigate = function(targetScreenId, params = {}) {
   const targetEl = document.getElementById(`screen-${targetScreenId}`);
   if (!targetEl) return;
 
-  // Clear screen unsubscribers when leaving sub-screens
-  if (["lesson-detail", "dm-thread"].includes(currentScreen)) {
+  // Clear live listeners when exiting detail screens
+  if (["lesson-detail", "dm-thread", "teacher-student", "student-progress"].includes(currentScreen)) {
     clearScreenListeners();
   }
 
-  // Hide all screens
+  // Switch screen
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   targetEl.classList.add("active");
   currentScreen = targetScreenId;
 
-  // Handle Tab Bar Visibility
+  // Bottom Tab Bar visibility
   const rootTabs = ["music", "academic", "chat", "more"];
   const tabBar = document.getElementById("tab-bar");
   if (currentUser && appUser && rootTabs.includes(targetScreenId)) {
@@ -86,7 +86,7 @@ window.navigate = function(targetScreenId, params = {}) {
     tabBar.style.display = "none";
   }
 
-  // Handle Screen Specific Initialization
+  // Initialize specific screens
   if (targetScreenId === "music") {
     currentSubject = "Music";
     loadSubjectView("Music");
@@ -124,7 +124,7 @@ function clearScreenListeners() {
 }
 
 // =========================================================================
-// Auth Observer & Session
+// Authentication Observer
 // =========================================================================
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
@@ -134,13 +134,22 @@ onAuthStateChanged(auth, async (user) => {
       if (userDoc.exists()) {
         appUser = { id: userDoc.id, ...userDoc.data() };
       } else {
-        appUser = { id: user.uid, email: user.email, name: user.displayName || "User", role: "student" };
+        appUser = {
+          id: user.uid,
+          email: user.email,
+          name: user.displayName || user.email?.split("@")[0] || "User",
+          role: "student"
+        };
       }
       navigate(activeTab || "music");
-      listenForUnreadBadges();
     } catch (e) {
       console.warn("Could not load user profile:", e);
-      appUser = { id: user.uid, email: user.email, role: "student" };
+      appUser = {
+        id: user.uid,
+        email: user.email,
+        name: user.displayName || user.email?.split("@")[0] || "User",
+        role: "student"
+      };
       navigate("music");
     }
   } else {
@@ -150,7 +159,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // =========================================================================
-// 1. Landing & Auth Mode Chooser
+// 1. Landing & Auth Flow
 // =========================================================================
 document.getElementById("btn-get-started").addEventListener("click", () => {
   navigate("auth-choice");
@@ -166,7 +175,7 @@ document.getElementById("btn-choice-login").addEventListener("click", () => {
   navigate("auth");
 });
 
-// Auth segmented control
+// Segmented Control (Log In vs Sign Up)
 document.querySelectorAll("#auth-mode-segmented .segmented-option").forEach(btn => {
   btn.addEventListener("click", () => {
     setAuthMode(btn.dataset.mode);
@@ -186,7 +195,7 @@ function setAuthMode(mode) {
   hideAuthError();
 }
 
-// Role segmented control
+// Role Selection (Student vs Teacher)
 document.querySelectorAll("#role-segmented .segmented-option").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll("#role-segmented .segmented-option").forEach(b => b.classList.remove("active"));
@@ -201,7 +210,7 @@ document.getElementById("auth-teacher-grade").addEventListener("change", (e) => 
   document.getElementById("teacher-other-wrap").style.display = e.target.value === "Other" ? "block" : "none";
 });
 
-// Handle Auth Form Submission
+// Submit Log In / Sign Up
 document.getElementById("auth-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const isSignUp = document.querySelector("#auth-mode-segmented .segmented-option.active").dataset.mode === "signup";
@@ -244,6 +253,7 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
       }
 
       await setDoc(doc(db, "users_v2", uid), userData);
+      appUser = userData;
     } else {
       await signInWithEmailAndPassword(auth, email, password);
     }
@@ -265,7 +275,7 @@ function hideAuthError() {
   errEl.style.display = "none";
 }
 
-// Password reset
+// Password Reset
 document.getElementById("btn-open-forgot").addEventListener("click", () => {
   openModal("modal-forgot-pwd");
   document.getElementById("forgot-email-input").value = document.getElementById("auth-email").value;
@@ -284,13 +294,23 @@ document.getElementById("btn-send-reset").addEventListener("click", async () => 
 });
 
 // =========================================================================
-// 2. Subject Tabs (Music & Academic) - Teacher vs Student
+// 2. Subject Tabs: Music & Academic (Teacher vs Student)
 // =========================================================================
 async function loadSubjectView(subject) {
+  currentSubject = subject;
   const isTeacher = appUser?.role === "teacher";
-  const containerId = subject === "Music" ? "music-content" : "academic-content";
-  const container = document.getElementById(containerId);
-  const actionBtn = document.getElementById(subject === "Music" ? "btn-add-music-item" : "btn-add-academic-item");
+
+  // Select the correct container and header based on subject
+  const isMusic = subject === "Music";
+  const container = document.getElementById(isMusic ? "music-content" : "academic-content");
+  const actionBtn = document.getElementById(isMusic ? "btn-add-music-item" : "btn-add-academic-item");
+  const navTitle = document.getElementById(isMusic ? "music-nav-title" : "academic-nav-title");
+  const headerTitle = document.getElementById(isMusic ? "music-header-title" : "academic-header-title");
+
+  // Update headers matching MatchApp.swift
+  const titleText = isTeacher ? `${subject} Students` : `${subject} Progress`;
+  if (navTitle) navTitle.textContent = titleText;
+  if (headerTitle) headerTitle.textContent = titleText;
 
   container.innerHTML = `<div class="ios-spinner"></div>`;
 
@@ -299,10 +319,23 @@ async function loadSubjectView(subject) {
     actionBtn.onclick = () => openSetGoalModal(subject);
 
     try {
-      // Query goals for this subject to gather students
-      const goalsSnap = await getDocs(
-        query(collection(db, "student_goals"), where("subject", "==", subject))
-      );
+      // 1. Query goals specifically for this teacher and subject
+      // (Uses teacherId to satisfy Firestore ownership rules without permission errors)
+      let goalsSnap;
+      try {
+        goalsSnap = await getDocs(
+          query(
+            collection(db, "student_goals"),
+            where("teacherId", "==", currentUser.uid),
+            where("subject", "==", subject)
+          )
+        );
+      } catch (scopedErr) {
+        // Fallback: query by subject
+        goalsSnap = await getDocs(
+          query(collection(db, "student_goals"), where("subject", "==", subject))
+        );
+      }
 
       const studentMap = new Map();
       goalsSnap.forEach(d => {
@@ -316,21 +349,26 @@ async function loadSubjectView(subject) {
         }
       });
 
-      // Also check teacher_student_links
-      if (currentUser) {
-        const linksSnap = await getDocs(
-          query(collection(db, "teacher_student_links"), where("teacherId", "==", currentUser.uid))
-        );
-        linksSnap.forEach(d => {
-          const data = d.data();
-          if (data.studentId && !studentMap.has(data.studentId)) {
-            studentMap.set(data.studentId, {
-              id: data.studentId,
-              name: data.studentName || "Student",
-              goal: null
-            });
-          }
-        });
+      // 2. Safe check on teacher_student_links (wrapped in try/catch)
+      try {
+        if (currentUser) {
+          const linksSnap = await getDocs(
+            query(collection(db, "teacher_student_links"), where("teacherId", "==", currentUser.uid))
+          );
+          linksSnap.forEach(d => {
+            const data = d.data();
+            // ONLY include student if explicitly tagged for this subject
+            if (data.studentId && !studentMap.has(data.studentId) && data.subject === subject) {
+              studentMap.set(data.studentId, {
+                id: data.studentId,
+                name: data.studentName || "Student",
+                goal: null
+              });
+            }
+          });
+        }
+      } catch (linksErr) {
+        // Silently skip if teacher_student_links has no read permissions
       }
 
       const students = Array.from(studentMap.values()).sort((a, b) => a.name.localeCompare(b.name));
@@ -338,15 +376,15 @@ async function loadSubjectView(subject) {
       if (students.length === 0) {
         container.innerHTML = `
           <div class="ios-empty-state">
-            <div class="empty-icon">${subject === "Music" ? "🎵" : "📖"}</div>
-            <h3>No students yet</h3>
-            <p>Tap ＋ to set a goal or link a student.</p>
+            <div class="empty-icon">${isMusic ? "🎵" : "📖"}</div>
+            <h3>No ${subject} students yet</h3>
+            <p>Tap ＋ to set a ${subject} goal for a student.</p>
           </div>
         `;
       } else {
         let html = `
           <div class="ios-section">
-            <div class="ios-section-header">STUDENTS</div>
+            <div class="ios-section-header">${subject.toUpperCase()} STUDENTS</div>
             <div class="ios-card-group">
         `;
         students.forEach(s => {
@@ -372,7 +410,7 @@ async function loadSubjectView(subject) {
         container.innerHTML = html;
       }
     } catch (e) {
-      container.innerHTML = `<p style="padding: 20px; color: var(--ios-red);">Error: ${e.message}</p>`;
+      renderPermissionWarning(container, e.message);
     }
   } else {
     // Student View
@@ -389,15 +427,15 @@ async function loadSubjectView(subject) {
       if (goals.length === 0) {
         container.innerHTML = `
           <div class="ios-empty-state">
-            <div class="empty-icon">${subject === "Music" ? "🎵" : "📖"}</div>
-            <h3>No goals set yet</h3>
+            <div class="empty-icon">${isMusic ? "🎵" : "📖"}</div>
+            <h3>No ${subject} goals set yet</h3>
             <p>Your teacher will set your ${subject} goal here.</p>
           </div>
         `;
       } else {
         let html = `
           <div class="ios-section">
-            <div class="ios-section-header">YOUR GOALS</div>
+            <div class="ios-section-header">YOUR ${subject.toUpperCase()} GOALS</div>
             <div class="ios-card-group">
         `;
         goals.forEach(g => {
@@ -420,19 +458,37 @@ async function loadSubjectView(subject) {
         container.innerHTML = html;
       }
     } catch (e) {
-      container.innerHTML = `<p style="padding: 20px; color: var(--ios-red);">Error: ${e.message}</p>`;
+      renderPermissionWarning(container, e.message);
     }
   }
 }
 
-// Global click helpers
+function renderPermissionWarning(container, errorMsg) {
+  container.innerHTML = `
+    <div class="ios-card-group" style="margin: 16px; padding: 18px; border-left: 4px solid var(--ios-red);">
+      <div style="font-size: 16px; font-weight: 700; color: var(--ios-red); margin-bottom: 4px;">
+        ⚠️ Firebase Permission Notice
+      </div>
+      <p style="font-size: 14px; color: #475569; line-height: 1.4; margin-bottom: 10px;">
+        ${escapeHtml(errorMsg)}
+      </p>
+      <div style="font-size: 13px; color: #64748b; background: #f8fafc; padding: 10px; border-radius: 8px;">
+        <strong>How to resolve:</strong> Make sure your Firebase Console Firestore Security Rules allow authenticated users to read and write <code>student_goals</code>.
+      </div>
+    </div>
+  `;
+}
+
+// Click Handlers for Drill-down
 window.openTeacherStudentDetail = function(params) {
   currentTeacherStudent = params;
+  if (params.subject) currentSubject = params.subject;
   navigate("teacher-student", params);
 };
 
 window.openStudentProgress = function(goal) {
   currentStudentGoal = goal;
+  if (goal.subject) currentSubject = goal.subject;
   navigate("student-progress", { goal });
 };
 
@@ -441,11 +497,13 @@ window.openStudentProgress = function(goal) {
 // =========================================================================
 function renderTeacherStudentDetail(params) {
   const { subject, studentId, studentName } = params;
+  currentSubject = subject || currentSubject;
+
   document.getElementById("teacher-student-nav-title").textContent = studentName || "Student";
-  document.getElementById("btn-back-teacher-student").onclick = () => navigate(subject.toLowerCase());
+  document.getElementById("btn-back-teacher-student").onclick = () => navigate(currentSubject.toLowerCase());
 
   document.getElementById("btn-open-add-note").onclick = () => {
-    openAddNoteModal(subject, studentId, studentName);
+    openAddNoteModal(currentSubject, studentId, studentName);
   };
 
   const container = document.getElementById("teacher-student-content");
@@ -453,26 +511,29 @@ function renderTeacherStudentDetail(params) {
 
   clearScreenListeners();
 
-  // 1. Listen for Goal
+  // Listen for active Goal
   const goalQuery = query(
     collection(db, "student_goals"),
     where("studentId", "==", studentId),
-    where("subject", "==", subject)
+    where("subject", "==", currentSubject)
   );
 
   let currentGoal = null;
   const unsubGoal = onSnapshot(goalQuery, (snap) => {
     currentGoal = !snap.empty ? { id: snap.docs[0].id, ...snap.docs[0].data() } : null;
     loadLessons();
+  }, (err) => {
+    console.warn("Goal fetch error:", err);
+    loadLessons();
   });
   unsubscribers.push(unsubGoal);
 
-  // 2. Listen for Lessons
+  // Listen for Progress Notes
   function loadLessons() {
     const lessonQuery = query(
       collection(db, "lesson_logs"),
       where("studentId", "==", studentId),
-      where("subject", "==", subject)
+      where("subject", "==", currentSubject)
     );
 
     const unsubLessons = onSnapshot(lessonQuery, (snap) => {
@@ -481,6 +542,9 @@ function renderTeacherStudentDetail(params) {
         .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
       renderUI(currentGoal, lessons);
+    }, (err) => {
+      console.warn("Lessons fetch error:", err);
+      renderUI(currentGoal, []);
     });
     unsubscribers.push(unsubLessons);
   }
@@ -501,8 +565,8 @@ function renderTeacherStudentDetail(params) {
       `;
     } else {
       html += `
-        <div style="color: var(--ios-text-secondary); margin-bottom: 10px;">No goal set yet for this student.</div>
-        <button class="ios-btn-ghost" onclick='openSetGoalModal("${subject}", "${studentId}", "${studentName}")'>Set a Goal</button>
+        <div style="color: var(--ios-text-secondary); margin-bottom: 10px;">No ${currentSubject} goal set yet for this student.</div>
+        <button class="ios-btn-ghost" onclick='openSetGoalModal("${currentSubject}", "${studentId}", "${studentName}")'>Set a Goal</button>
       `;
     }
 
@@ -549,8 +613,10 @@ function renderTeacherStudentDetail(params) {
 // =========================================================================
 function renderStudentProgress(params) {
   const goal = params.goal;
-  document.getElementById("student-progress-nav-title").textContent = `${goal.subject} Progress`;
-  document.getElementById("btn-back-student-progress").onclick = () => navigate(goal.subject.toLowerCase());
+  currentSubject = goal.subject || currentSubject;
+
+  document.getElementById("student-progress-nav-title").textContent = `${currentSubject} Progress`;
+  document.getElementById("btn-back-student-progress").onclick = () => navigate(currentSubject.toLowerCase());
 
   const container = document.getElementById("student-progress-content");
   container.innerHTML = `<div class="ios-spinner"></div>`;
@@ -560,7 +626,7 @@ function renderStudentProgress(params) {
   const q = query(
     collection(db, "lesson_logs"),
     where("studentId", "==", goal.studentId),
-    where("subject", "==", goal.subject)
+    where("subject", "==", currentSubject)
   );
 
   const unsub = onSnapshot(q, (snap) => {
@@ -609,6 +675,8 @@ function renderStudentProgress(params) {
 
     html += `</div>`;
     container.innerHTML = html;
+  }, (err) => {
+    renderPermissionWarning(container, err.message);
   });
   unsubscribers.push(unsub);
 }
@@ -697,6 +765,8 @@ function renderLessonDetail({ lesson, goal }) {
 
     html += `</div>`;
     container.innerHTML = html;
+  }, (err) => {
+    console.warn("Comments fetch error:", err);
   });
   unsubscribers.push(unsub);
 }
@@ -774,7 +844,7 @@ async function loadChatInbox() {
     html += `</div></div>`;
     container.innerHTML = html;
   } catch (e) {
-    container.innerHTML = `<p style="padding: 20px; color: var(--ios-red);">Error: ${e.message}</p>`;
+    renderPermissionWarning(container, e.message);
   }
 }
 
@@ -822,6 +892,8 @@ function renderDMThread(params) {
     });
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }, (err) => {
+    messagesContainer.innerHTML = `<p style="padding: 16px; color: var(--ios-red);">Chat error: ${err.message}</p>`;
   });
   unsubscribers.push(unsub);
 }
@@ -917,12 +989,12 @@ window.startChatFromPicker = function(user) {
 // =========================================================================
 // 7. Modals: Set Goal & Add Note
 // =========================================================================
-let editingGoalId = null;
-
 window.openSetGoalModal = async function(subject, preselectedStudentId = null, preselectedStudentName = null) {
-  openModal("modal-set-goal");
+  currentSubject = subject || currentSubject;
   editingGoalId = null;
-  document.getElementById("goal-sheet-title").textContent = "Set Goal";
+
+  openModal("modal-set-goal");
+  document.getElementById("goal-sheet-title").textContent = `Set ${currentSubject} Goal`;
   document.getElementById("goal-text-input").value = "";
   document.getElementById("goal-notes-input").value = "";
 
@@ -936,21 +1008,27 @@ window.openSetGoalModal = async function(subject, preselectedStudentId = null, p
     selectGroup.style.display = "block";
     select.innerHTML = `<option value="">Loading students…</option>`;
 
-    // Load available students
-    const snap = await getDocs(query(collection(db, "users_v2"), where("role", "==", "student")));
-    let options = `<option value="">Choose student…</option>`;
-    snap.docs.forEach(d => {
-      const u = d.data();
-      options += `<option value="${d.id}">${escapeHtml(u.name || u.email)}</option>`;
-    });
-    select.innerHTML = options;
+    try {
+      const snap = await getDocs(query(collection(db, "users_v2"), where("role", "==", "student")));
+      let options = `<option value="">Choose student…</option>`;
+      snap.docs.forEach(d => {
+        const u = d.data();
+        options += `<option value="${d.id}">${escapeHtml(u.name || u.email)}</option>`;
+      });
+      select.innerHTML = options;
+    } catch (err) {
+      console.warn("Could not list candidate students:", err);
+      select.innerHTML = `<option value="">Select student (permissions restricted)</option>`;
+    }
   }
 };
 
 window.openEditGoalModal = function(goal) {
-  openModal("modal-set-goal");
+  if (goal?.subject) currentSubject = goal.subject;
   editingGoalId = goal.id;
-  document.getElementById("goal-sheet-title").textContent = "Edit Goal";
+
+  openModal("modal-set-goal");
+  document.getElementById("goal-sheet-title").textContent = `Edit ${currentSubject} Goal`;
   document.getElementById("goal-student-select-group").style.display = "none";
   document.getElementById("goal-text-input").value = goal.goalText || "";
   document.getElementById("goal-notes-input").value = goal.notes || "";
@@ -988,6 +1066,7 @@ document.getElementById("btn-save-goal").addEventListener("click", async () => {
 });
 
 window.openAddNoteModal = function(subject, studentId, studentName) {
+  currentSubject = subject || currentSubject;
   openModal("modal-add-note");
   document.getElementById("note-author-input").value = appUser?.name || currentUser.displayName || "Teacher";
   document.getElementById("note-progress-input").value = "";
@@ -1002,13 +1081,15 @@ document.getElementById("btn-save-note").addEventListener("click", async () => {
   if (!authorName || !progressNote) return alert("Please fill in required fields.");
   if (!currentTeacherStudent) return;
 
+  const noteSubject = currentTeacherStudent.subject || currentSubject;
+
   try {
     await addDoc(collection(db, "lesson_logs"), {
       teacherId: currentUser.uid,
       teacherName: authorName,
       studentId: currentTeacherStudent.studentId,
       studentName: currentTeacherStudent.studentName,
-      subject: currentTeacherStudent.subject,
+      subject: noteSubject,
       progressNote,
       notes,
       createdAt: Date.now()
@@ -1072,7 +1153,7 @@ document.getElementById("btn-delete-account").addEventListener("click", () => {
   window.location.href = "mailto:360viewofmypeers@gmail.com?subject=Delete%20my%20account";
 });
 
-// Tab Bar clicks
+// Bottom Tab Bar Navigation
 document.querySelectorAll("#tab-bar .tab-item").forEach(item => {
   item.addEventListener("click", () => {
     navigate(item.dataset.tab);
@@ -1080,7 +1161,7 @@ document.querySelectorAll("#tab-bar .tab-item").forEach(item => {
 });
 
 // =========================================================================
-// Modal Utilities
+// Modal Helpers
 // =========================================================================
 window.openModal = function(id) {
   const m = document.getElementById(id);
@@ -1093,7 +1174,7 @@ window.closeModal = function(id) {
 };
 
 // =========================================================================
-// Formatting & Helpers
+// Utility Functions
 // =========================================================================
 function escapeHtml(str) {
   if (!str) return "";
@@ -1132,15 +1213,7 @@ function updateClock() {
 setInterval(updateClock, 10000);
 updateClock();
 
-// Unread Badge Watcher
-function listenForUnreadBadges() {
-  const badgeEl = document.getElementById("chat-tab-badge");
-  // Simple listener placeholder matching MatchApp.swift
-  badgeEl.style.display = unreadCount > 0 ? "flex" : "none";
-  badgeEl.textContent = unreadCount;
-}
-
-// Toggle Desktop Frame
+// Toggle Desktop Phone Bezel View
 document.getElementById("toggle-frame-btn").addEventListener("click", () => {
   const isFull = document.body.classList.toggle("full-screen-mode");
   document.getElementById("toggle-frame-btn").textContent = isFull ? "📱 Phone View" : "🖥️ Full Screen";
